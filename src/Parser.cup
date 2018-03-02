@@ -1,0 +1,201 @@
+import java_cup.runtime.*;
+
+parser code
+{:
+    public boolean syntaxErrors; // Need to set this as true when there is a syntax error
+    public void syntax_error(Symbol current_token) {
+        report_error(
+             "Syntax error at line " + (current_token.left+1) + ", column " + current_token.right, null );
+    }
+:}
+
+/* Terminals */
+
+// Data type terminals
+terminal CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ, SET, THREAD, FUNCTION, STRING;
+
+// Declaration terminals
+terminal TDEF, ALIAS, FDEF, MAIN;
+
+// Boolean operator terminals
+terminal NOT, AND, OR;
+
+// Numeric operator terminals
+terminal PLUS, MINUS, TIMES, DIVIDE, POWER;
+
+// Aggregate data type terminals
+terminal LEN, IN, CONCAT;
+
+// Set operator terminals
+terminal UNION, INTERSECTION, DIFFERENCE;
+
+// Comparison operator terminals
+terminal LESSTHAN, LESSTHANEQ, GREATERTHAN, GREATERTHANEQ, EQEQ, NOTEQ;
+
+// Assignment terminals
+terminal ASSIGN;
+
+// Input and output terminals
+terminal READ, PRINT;
+
+// Control flow terminals
+terminal IF, THEN, FI, ELSE, ELSEIF, WHILE, DO, OD, BREAK, FORALL, RETURN;
+
+// Literal terminals
+terminal IDENTIFIER, CHARACTER, BOOLEAN, INTEGER, RATIONAL, FLOAT_LIT, STRING_LIT;
+
+// Other terminals
+terminal LPAREN, RPAREN, LBRACKET, RBRACKET, DOT, COMMA, COLON, SEMICOLON, LCURLY, RCURLY;
+
+
+/* Nonterminals */
+non terminal program, declaration_list, declaration, main, var_def, new_data_type_def, type_declaration_list, func_def;
+non terminal alias_def, assignment, param_list, param, func_body, lambda, lambda_body;
+non terminal type, literal, expr_list, expr, function_call, forall, break, thread;
+non terminal statement_list, statement, input, output, return, while, if_loop, else_if;
+non terminal operator, seq, seq_lit, seq_elem, seq_slice, seq_object, inner_val, indexing;
+non terminal dict, dict_lit, dict_elem, set, set_lit, set_elem;
+
+
+/* Precedences */
+precedence left  PLUS, MINUS, TIMES, DIVIDE, AND, OR, UNION, INTERSECTION, DIFFERENCE;
+precedence left  LESSTHAN, LESSTHANEQ, GREATERTHAN, GREATERTHANEQ, EQEQ, NOTEQ, CONCAT;
+precedence right POWER, IN;
+precedence left IDENTIFIER, CHAR, BOOL, INT, RAT, FLOAT, TOP, DICT, SEQ, SET, STRING, THREAD;
+precedence left BREAK, RETURN, READ, PRINT, WHILE, IF, FORALL;
+precedence left LCURLY, RCURLY, SEMICOLON, LBRACKET, RBRACKET, COLON;
+
+/* The grammar */
+start with program;
+
+program ::= declaration_list main declaration_list;
+
+declaration_list ::= declaration declaration_list | ;
+
+declaration ::= var_def
+              | new_data_type_def
+              | func_def
+              | alias_def;
+
+var_def ::= type IDENTIFIER ASSIGN expr_list SEMICOLON
+          | type IDENTIFIER SEMICOLON;
+
+new_data_type_def ::= TDEF type LCURLY type_declaration_list RCURLY SEMICOLON;
+
+type_declaration_list ::= type IDENTIFIER COMMA type_declaration_list
+                        | type IDENTIFIER;
+
+func_def ::= FDEF type IDENTIFIER LPAREN param_list RPAREN LCURLY func_body RCURLY SEMICOLON
+           | FDEF IDENTIFIER LPAREN param_list RPAREN LCURLY func_body RCURLY SEMICOLON
+           | FUNCTION IDENTIFIER ASSIGN lambda;
+
+param_list ::= param COMMA param_list
+             | param
+             |;
+
+param ::= type IDENTIFIER;
+
+lambda ::= UNION IDENTIFIER UNION MINUS GREATERTHAN LCURLY lambda_body RCURLY SEMICOLON
+         | UNION IDENTIFIER UNION MINUS GREATERTHAN lambda
+         | UNION IDENTIFIER UNION MINUS GREATERTHAN lambda_body;
+
+lambda_body ::= RETURN expr SEMICOLON
+              | expr SEMICOLON;
+
+alias_def ::= ALIAS type IDENTIFIER SEMICOLON;
+
+assignment ::= IDENTIFIER ASSIGN expr_list SEMICOLON
+             | inner_val ASSIGN expr_list SEMICOLON;
+
+// hmmmm
+func_body ::= declaration_list statement_list
+           /* | declaration */
+            | statement_list;
+
+statement_list ::= statement statement_list
+                 | statement;
+
+statement ::= input
+            | output
+            | while
+            | if_loop
+            | function_call SEMICOLON
+            | forall
+            | break
+            | assignment
+            | thread
+            | return;
+
+input ::= READ IDENTIFIER SEMICOLON;
+output ::= PRINT expr SEMICOLON;
+function_call ::= IDENTIFIER LPAREN expr_list RPAREN;
+forall ::= FORALL LPAREN expr RPAREN DO func_body OD;
+break ::= BREAK expr SEMICOLON
+        | BREAK SEMICOLON;
+
+while ::= WHILE LPAREN expr RPAREN DO func_body OD;
+
+if_loop ::= IF LPAREN expr RPAREN THEN func_body FI
+          | IF LPAREN expr RPAREN THEN func_body ELSE func_body FI
+          | IF LPAREN expr RPAREN THEN func_body else_if FI;
+
+else_if ::= ELSEIF LPAREN expr RPAREN THEN func_body else_if
+          | ELSEIF LPAREN expr RPAREN THEN func_body
+          | ELSEIF LPAREN expr RPAREN THEN func_body ELSE func_body;
+
+thread ::= THREAD IDENTIFIER ASSIGN LCURLY func_body RCURLY SEMICOLON;
+
+return ::= RETURN expr SEMICOLON | RETURN SEMICOLON;
+
+
+main ::= MAIN LCURLY func_body RCURLY SEMICOLON;
+
+
+type ::= CHAR | BOOL | INT | RAT | FLOAT| TOP| dict | seq | set | STRING | IDENTIFIER;
+literal ::= IDENTIFIER | CHARACTER | BOOLEAN | INTEGER | RATIONAL | FLOAT_LIT | STRING_LIT | dict_lit | seq_lit | set_lit;
+seq ::= SEQ LESSTHAN type GREATERTHAN;
+seq_lit ::= LBRACKET seq_elem RBRACKET;
+seq_elem ::= expr COMMA seq_elem
+           | expr
+           | ;
+
+seq_slice ::= seq_object seq_slice
+            | seq_object;
+
+seq_object ::= LBRACKET expr COLON expr RBRACKET
+             | LBRACKET COLON expr RBRACKET
+             | LBRACKET expr COLON RBRACKET
+             | LBRACKET expr RBRACKET;
+
+
+inner_val ::= IDENTIFIER DOT IDENTIFIER;
+indexing ::= IDENTIFIER LBRACKET IDENTIFIER RBRACKET;
+
+
+dict ::= DICT LESSTHAN type COMMA type GREATERTHAN;
+dict_lit ::= LPAREN dict_elem RPAREN;
+dict_elem ::= literal COLON literal COMMA dict_elem
+            | literal COLON literal
+            | ;
+
+set ::= SET LESSTHAN type GREATERTHAN;
+set_lit ::= LCURLY set_elem RCURLY;
+set_elem ::= literal COMMA set_elem
+            | literal
+            | ;
+
+operator ::= PLUS | MINUS | TIMES | DIVIDE | POWER | AND | OR | IN | CONCAT| LESSTHAN | LESSTHANEQ | GREATERTHAN
+           | GREATERTHANEQ | EQEQ | NOTEQ | UNION | INTERSECTION | DIFFERENCE;
+expr_list ::= expr COMMA expr_list| expr;
+expr ::= literal
+      | LPAREN expr RPAREN
+      | expr operator expr
+      | NOT expr
+      | MINUS expr
+      | LEN LPAREN IDENTIFIER RPAREN
+      | indexing
+      | inner_val
+      | expr IN expr
+      | IDENTIFIER seq_slice
+      | seq_object
+      | function_call;

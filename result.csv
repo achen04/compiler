@@ -1,0 +1,73 @@
+
+tests/open/n-alice.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-decl.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-dict-unbalanced-open.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-empty-else.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-empty-main.s
+Syntax error at line 3, column 0Couldn't repair and continue parse at character 2 of input
+tests/open/n-fib.s
+Syntax error at line 2, column 1Couldn't repair and continue parse at character 1 of input
+tests/open/n-func-param-type-error0.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-main-missing-brace.s
+Syntax error at line 2, column 2Couldn't repair and continue parse at character 1 of input
+tests/open/n-multiple-assignment.s
+Syntax error at line 3, column 7Couldn't repair and continue parse at character 2 of input
+tests/open/n-no-main.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-stray-elif.s
+Syntax error at line 2, column 2Couldn't repair and continue parse at character 1 of input
+tests/open/n-stray-return.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/n-thread-no-init.s
+Syntax error at line 2, column 13Couldn't repair and continue parse at character 1 of input
+tests/open/n-type-in-expr.s
+Syntax error at line 3, column 12Couldn't repair and continue parse at character 2 of input
+tests/open/n-type-stutter-in-plist.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-adt.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-alice.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-elif.s
+Syntax error at line 2, column 2Couldn't repair and continue parse at character 1 of input
+tests/open/p-empty-adts.s
+Syntax error at line 2, column 5Couldn't repair and continue parse at character 1 of input
+tests/open/p-fib.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-forall.s
+Syntax error at line 2, column 7Couldn't repair and continue parse at character 1 of input
+tests/open/p-fp.s
+parsing successful
+tests/open/p-func-decl-in-main.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-if-then-else0.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-main-only.s
+Syntax error at line 3, column 15Couldn't repair and continue parse at character 2 of input
+tests/open/p-nested-func-decls.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-nested-lambda-expression.s
+Syntax error at line 2, column 20Couldn't repair and continue parse at character 1 of input
+tests/open/p-nested-while.s
+Syntax error at line 2, column 4Couldn't repair and continue parse at character 1 of input
+tests/open/p-rat.s
+Syntax error at line 2, column 12Couldn't repair and continue parse at character 1 of input
+tests/open/p-reverse.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-seq.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-set-ops.s
+Syntax error at line 2, column 7Couldn't repair and continue parse at character 1 of input
+tests/open/p-tdef.s
+Syntax error at line 2, column 1Couldn't repair and continue parse at character 1 of input
+tests/open/p-thread.s
+Syntax error at line 2, column 17Couldn't repair and continue parse at character 1 of input
+tests/open/p-two-func-if.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
+tests/open/p-while.s
+Syntax error at line 1, column 0Couldn't repair and continue parse at character 0 of input
